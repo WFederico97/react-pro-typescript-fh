@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import { routes } from "./routes";
 import {
   BrowserRouter,
   NavLink,
@@ -7,10 +6,11 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
+import { ShoppingPage } from "../02-component-patterns/pages/ShoppingPage";
 
 export const Navigation = () => {
   return (
-    <Suspense fallback={<span>Loading.... </span>}  >
+    <Suspense fallback={<span>Loading.... </span>}>
       <BrowserRouter>
         <div className="main-layout">
           <nav>
@@ -18,25 +18,17 @@ export const Navigation = () => {
               <img src="/logo.svg" alt="React Logo" />
             </NavLink>
             <ul>
-              {routes.map(({ to, name }) => (
-                <li key={to}>
-                  <NavLink
-                    to={to}
-                    className={({ isActive }) => (isActive ? "nav-active" : "")}
-                  >
-                    {name}
-                  </NavLink>
-                </li>
-              ))}
+              <li>
+                <NavLink to="/shopping" >
+                  Shopping Page
+                </NavLink>
+              </li>
             </ul>
           </nav>
 
           <Routes>
-            {routes.map(({ path, Component, to }) => (
-              <Route key={to} path={path} element={<Component />} />
-            ))}
-
-            <Route path="/*" element={<Navigate to={routes[0].to} replace />} />
+            <Route path='/shopping' element={<ShoppingPage />} />
+            <Route path="/*" element={<Navigate to='/shopping' replace />} />
           </Routes>
         </div>
       </BrowserRouter>
