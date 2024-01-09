@@ -1,0 +1,24 @@
+.bg-dark {
+  background-color: #181515;
+}
+
+.text-white {
+  color: #fff;
+  margin: 10px;
+}
+
+.text-bold {
+  font-weight: bolder;
+  font-size: 20px;
+}
+
+.custom-image {
+  padding: 10px;
+  border-radius: 20px;
+  width: calc(100% - 20px);
+}
+
+.custom-btns button, .custom-btns div {
+  color: #fff;
+  border-color: #fff;
+}
