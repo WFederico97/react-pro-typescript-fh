@@ -18,7 +18,14 @@
   width: calc(100% - 20px);
 }
 
-.custom-btns button, .custom-btns div {
+.custom-btns button,
+.custom-btns div {
   color: #fff;
   border-color: #fff;
+}
+
+.shopping-cart {
+  position: fixed;
+  top: 0px;
+  right: 10px;
 }
