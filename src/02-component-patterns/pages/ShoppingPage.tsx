@@ -1,54 +1,15 @@
-import { useState } from "react";
 import ProductCard, { ProductButtons, ProductImage } from "../components";
-import { Product } from '../interfaces/interfaces';
-
 import "../styles/custom-styles.css";
-
-const product1 = {
-  id: 1,
-  title: "Coffee Mug",
-  description: "Coffee Mug",
-  price: 100,
-  image: "./coffee-mug.png",
-  stock: 10,
-};
-const product2 = {
-  id: 2,
-  title: "Coffee Mug 2",
-  description: "Coffee Mug 2",
-  price: 100,
-  image: "./coffee-mug2.png",
-  stock: 10,
-};
-
-const products: Product[] = [product1, product2];
-
-interface ProductInCart extends Product {
-  count: number;
-}
+import { useShoppingCart } from '../hooks/useShoppingCart';
+import { products } from "../data/products";
 
 export const ShoppingPage = () => {
-  const [shoppingCart, setShoppingCart] = useState<{ [key:string]: ProductInCart }>({})
 
-  const handleProductChange = ({counter, product}: {counter: number, product: Product}) => {
-
-    setShoppingCart((prevState) => {
-      if (counter === 0) {
-        const {[product.id]: _, ...rest} = prevState //* rest is the new object without the product, _ is the product that was removed
-                                                      //* [product.id] is the key that we want to remove from prevState
-        return rest
-      }
-      return {
-        ...prevState,
-        [product.id]: {...product, counter},
-      }
-    })
-
-  }
+  const { shoppingCart, handleProductChange} = useShoppingCart(); //* We use the custom hook useShoppingCart to get the products and the shoppingCart
   
   return (
     <div>
-      <h1>Shopping Store</h1>
+      <h1>Shopping Store</h1>5
       <hr />
       <div
         style={{
@@ -63,8 +24,8 @@ export const ShoppingPage = () => {
             key={product.id}
             product={product}
             className="bg-dark text-white"
-            onChange={(_) => handleProductChange(_) }
-
+            value={shoppingCart[product.id]?.count || 0}  /* If the product is in the shoppingCart, then we use the count, otherwise we use 0 */
+            onChange={(_) => handleProductChange(_)}
           >
             <ProductCard.Image image={product.image} className="custom-image" />
             <ProductCard.Title
@@ -80,20 +41,25 @@ export const ShoppingPage = () => {
         ))}
       </div>
       <div className="shopping-cart">
-        <ProductCard
-          product={product1}
-          className="bg-dark text-white"
-          style={{ width: "100px" }}
-        >
-          <ProductImage image={product1.image} className="custom-image" />
-          <ProductButtons className="custom-btns" />
-        </ProductCard>
-      </div>
-      <div>
-        <code>
-          {JSON.stringify(shoppingCart, null, 5)} 
-          
-        </code>
+        {Object.entries(shoppingCart).map(([key, product]) => (
+          <ProductCard
+            key={key}
+            product={product}
+            className="bg-dark text-white"
+            style={{ width: "100px" }}
+            onChange={handleProductChange}
+            value={product.count}
+          >
+            <ProductImage image={product.image} className="custom-image" />
+            <ProductButtons
+              style={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+              className="custom-btns"
+            />
+          </ProductCard>
+        ))}
       </div>
     </div>
   );

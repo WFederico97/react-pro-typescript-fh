@@ -29,6 +29,10 @@ export interface ProductCardHOCProps {
 }
 
 export interface onChangeArgs {
-  counter: number;
+  count: number;
   product: Product;
+}
+
+export interface ProductInCart extends Product {
+  count: number;
 }
